@@ -15,3 +15,6 @@ function Set-AppColors {
         $psISE.Options.ConsolePaneTextBackgroundColor = "Black"
     }
 }
+
+function Set-PongColors {
+}
