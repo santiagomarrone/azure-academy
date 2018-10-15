@@ -1,23 +1,68 @@
-﻿$pathToApp = ""
+﻿# Import all necessary files
 
-$indent = "`n>>>"
+$pathToApp = ""
 
 Import-Module "$pathToApp\layout.ps1"
+
+Import-Module "$pathToApp\functions\security.ps1"
 Import-Module "$pathToApp\functions\control.ps1"
-Import-Module "$pathtoApp\functions\manage\event-00.ps1"
+
+Import-Module "$pathToApp\functions\manage\event-f-0.ps1"
+Import-Module "$pathToApp\functions\manage\event-f-1.ps1"
+Import-Module "$pathToApp\functions\manage\event-f-2.ps1"
+Import-Module "$pathToApp\functions\manage\event-f-d.ps1"
+
+Import-Module "$pathToApp\functions\manage\event-s-0.ps1"
+Import-Module "$pathToApp\functions\manage\event-s-1.ps1"
+Import-Module "$pathToApp\functions\manage\event-s-2.ps1"
+Import-Module "$pathToApp\functions\manage\event-s-d.ps1"
+
+Import-Module "$pathToApp\functions\deploy\resgroup-linux.ps1"
+Import-Module "$pathToApp\functions\deploy\resgroup-windows.ps1"
+
+
+
+# Set output format variables
+
+$indent = "`n>>>"
+$load = "[....]"
+
+
+# Set layout for any platform
 
 Set-AppColors
 
-$item = Get-MenuItem
+
+# Show main menu & manage events
+
+$item = Get-FirstMenuItem
 
 switch ($item)
 {
-  1 {Manage-Event01}
-  2 {Manage-Event02}
+  1 {Manage-EventF1} # Linux 
+  2 {Manage-EventF2} # Windows
 
-  0 {Manage-Event00 -from "0"}
+  0 {Manage-EventF0} # Quit Azure
 
-  Default {Manage-Event00 -from "Default"}
+  Default {Manage-EventFD} 
+}
+
+
+# Show other menu & manage events
+
+Print-NewMessage -from $item
+
+$item = Get-SecondMenuItem
+
+switch ($item)
+{
+    1 {Manage-EventS1} # Play
+    2 {Manage-EventS2} # Learn
+    3 {Manage-EventS3} # Camera
+
+    0 {Manage-EventS0} # Quit App
+
+    Default {Manage-EventSD}
 }
 
 Write-Host "$indent CLOSING APPLICATION [...]$indent See you soon!"
