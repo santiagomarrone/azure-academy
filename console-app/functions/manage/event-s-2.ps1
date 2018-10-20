@@ -1,30 +1,14 @@
-﻿function Manage-EventS2 {
+﻿Import-Module "$pathToApp\functions\enjoy\learn.ps1"
+
+function Manage-EventS2 {
 
     Write-Host "$indent These are the letters ! `n"
     
-    for ($index = 0; $index -lt 26; $index++) {
-        
-        $ascii = 65 + $index
-        Write-Host -NoNewline ([char] ($ascii)) ""
-    }
+    Learn-Letters
+   
+    Write-Host "`n $indent And here you have the numbers ! `n"
 
-    Write-Host "$indent And here you have the numbers ! `n"
-
-    for ($index = 1; $index -le 100; $index++) {
-        
-        if ($index -ne 100) {
-            
-            Write-Host -NoNewline "0" # Adds a 0 if not 100
-
-            if ($index -lt 10) {
-                Write-Host -NoNewline "0" # And other 0 if less than 10
-            }
-        }
-
-        Write-Host -NoNewline $index ""
-
-        if ($index -ne 0) {
-            if ($index % 10 -eq 0) { Write-Host -NoNewline "`n"}
-        }
-    }
+    Learn-Numbers
 }
+
+Manage-EventS2

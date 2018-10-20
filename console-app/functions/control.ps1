@@ -9,27 +9,47 @@ function Get-FirstMenuItem {
     return Read-Host "Execute an action"
 }
 
-function Print-NewMessage ($from) {
+function Select-Message ($deploymentDenied) {
+    
+    if ($deploymentDenied -eq $true) {
+        Write-Host $deniedMessage
+    }
+    else {
+        if ($deploymentDenied -eq $false) {
+            Write-Host $deployingMessage
+        }
+        else {
+            Write-Host "Error"
+        }
+    }
+}
+
+function Print-NewMessage ($from, $deploymentDenied = $false) {
+    
+    $deployingMessage = "$indent Your deployment may take a while to end... $indent Let´s do something else until then"
+    $deniedMessage = "$indent Stop thinking about deployments ! $indent Let´s do something else..."
+    $quitMessage = "$indent Let's do something else !"
+    $errorMessage = "$indent Loading emergency menu $load"
 
     switch ($from) {
 
-        1 {Write-Host "$indent Your deployment may take a while to end... $indent Why don't you do something else until then ?"}
-        2 {Write-Host "$indent Your deployment may take a while to end... $indent Why don't you do something else until then ?"}
+        1 {Select-Message $deploymentDenied}
+        2 {Select-Message $deploymentDenied}
 
-        0 {Write-Host "$indent Let's do something else !"}
+        0 {Write-Host $quitMessage}
 
-        Default {Write-Host "$indent Loading emergency menu $load"}
+        Default {Write-Host $errorMessage}
     }
-
 }
 
 function Get-SecondMenuItem () {
 
     Write-Host "$indent NEW MENU"
 
-    Write-Host "[1] Play a game !"
+    Write-Host "[1] Play Hangman !"
     Write-Host "[2] Learn something useful :)"
     Write-Host "[3] First, let me take a selfie"
+
     Write-Host "[0] Close this app"
 
     return Read-Host "$indent Come on, pick one option"
