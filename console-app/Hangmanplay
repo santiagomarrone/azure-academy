@@ -1,0 +1,211 @@
+clear
+#colours of the background console, font and foreground for the powershell and powershell ISE
+$Host.UI.RawUI.WindowTitle = "This is the Window Title"
+
+    if ($psISE -eq $null) {
+        $Host.UI.RawUI.BackgroundColor = "Black"
+        $Host.UI.RawUI.ForegroundColor = "Green"
+        $Host.UI.RawUI.CursorSize = 30
+    }
+    else {
+        $psISE.Options.ConsolePaneBackgroundColor = "Black"
+        $psISE.Options.ConsolePaneForegroundColor = "white"
+        $psISE.Options.ConsolePaneTextBackgroundColor = "green"
+    }
+
+
+
+$check = $false
+$indent = "`n>>>"
+
+
+Write-host "$indent WHATS YOUR NAME? "
+
+$name = Read-host 
+
+#windows prompt to select if the game start or not
+
+$msgBox = [System.Windows.MessageBox]::Show("Hello $name, are you ready to play?",'Welcome','YesNo','Info')
+
+switch  ($msgBox) {
+
+  'no' {
+
+  exit 
+
+  }
+
+  'yes' {
+  
+
+  #enter the word two times and validate if match, if not the word must type again
+
+    while ( $check -eq $false) {
+
+    $targetWord = Read-Host "$indent $name, Type word"
+    $verif = read-host "$indent Type word again"
+
+    if ($targetWord -ne $verif) {
+
+    [System.Windows.MessageBox]::Show("----ERROR!! ---, $name  THE WORDS DONT MATCH, Please re enter the words again",'Error!','OK','Error')
+    
+
+    $check = $false
+
+    }
+    else {
+    $check = $true 
+
+    }
+    }
+
+#function to select the level and get the amount of lives by each level
+
+function Get-HangmanMenuItem {
+
+    Write-Host "$indent LEVELS"
+    
+     Write-Host "[1] Easy"
+     Write-Host "[2] Medium"
+     Write-Host "[3] Hard"
+
+    return Read-Host "Choose your level"
+}
+
+$item = Get-HangmanMenuItem
+
+    switch ($item)
+    {
+        1 {$life = 7} 
+        2 {$life = 5} 
+        3 {$life = 3}
+     
+        Default {$life = 5}
+    }
+
+
+[Char[]]$wordProgress =  "_" * $targetWord.Length
+
+clear
+
+
+ Write-Host "$indent GUESS THE WORD"
+
+ Write-Host "$indent $name You got $life lives"
+
+$guesses=@()
+do
+{
+    do
+    {
+        Write-Host "[$($targetWord.Length)] $wordProgress"
+        Write-Host "Lifes Remain " $life
+
+        $guessLetter = Read-Host "Guess a letter"
+        if ($guesses -contains $guessLetter)
+        {
+            "Try another letter!"
+        }
+    } while ($guesses -contains $guessLetter) 
+
+    $guesses+=$guessLetter
+    $guesses -join ','
+
+    $foundLetter = $false
+    for($i=0;$i -lt $targetWord.Length; $i++)
+    {
+        if($guessLetter -like $targetWord[$i] )
+        {
+            $wordProgress[$i] = $guessLetter
+            $foundLetter=$true
+        }
+    }
+
+    if(!$foundLetter)
+    {
+        $life--
+    }
+
+    if($($wordProgress -join '') -like $targetWord)
+    {
+        Write-Host $targetWord;
+
+        $psISE.Options.ConsolePaneBackgroundColor = "yellow"
+        $psISE.Options.ConsolePaneForegroundColor = "white"
+        $psISE.Options.ConsolePaneTextBackgroundColor = "black"
+
+     #CHEERS COLOURS#
+
+    $timeout = new-timespan -Seconds 5
+
+    $cronometro = [diagnostics.stopwatch]::StartNew()
+
+    $indice = 0
+
+    while ($cronometro.elapsed -lt $timeout){
+   
+   
+    if ($indice % 2 -eq 0) {
+    $psISE.Options.ConsolePaneBackgroundColor = "Red"
+    }
+    else {
+    $psISE.Options.ConsolePaneBackgroundColor = "Yellow"
+    }
+
+    $indice++
+   
+    start-sleep -Milliseconds 25
+
+
+    }
+
+           
+    [System.Windows.MessageBox]::Show("Congrats $name, you win!!!",'Mensaje','OK','Info')
+
+    Write-Host " ************  You WIN  ********************
+
+        
+________________
+  |         |
+  |         |
+  |
+  |
+  |        
+  |        \0/
+  |         |
+___|____    //  ** 
+
+"
+        break;
+    }
+
+}
+while($life -gt 0)
+if ($life -eq 0)
+{
+
+    $psISE.Options.ConsolePaneBackgroundColor = "Red"
+    $psISE.Options.ConsolePaneForegroundColor = "white"
+    $psISE.Options.ConsolePaneTextBackgroundColor = "black"
+
+[System.Windows.MessageBox]::Show('Sorry, you loose','Error','OK','Info')
+
+Write-Host " ------------- You LOST ------------
+
+________________
+  |         |
+  |         |
+  |         0
+  |         ~
+  |        /|\
+  |        //
+  |
+  |         
+___|____         
+
+"
+}
+
+}
+
+}
