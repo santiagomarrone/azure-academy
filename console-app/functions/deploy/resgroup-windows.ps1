@@ -1,6 +1,6 @@
 function DeployWindows {
 
-  $pathWindowsTemplate = ""
+  $pathWindowsTemplate = "$pathToApp\functions\deploy\templates\template-windows.json"
   $newGroupName = ""
 
   New-AzureRmResourceGroup -Name $newGroupName = "" -Location "eastus"
