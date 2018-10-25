@@ -1,11 +1,13 @@
-﻿function Test-Deployment {
+﻿$path = ""
+
+function Test-Deployment {
         
     New-AzureRmResourceGroup -Name test-development -Location eastus
 
     New-AzureRmResourceGroupDeployment `
     -ResourceGroupName test-development `
-    -TemplateFile C:\Users\santiago.marrone\Documents\academy-remote\template-deployment\template.json `
-    -TemplateParameterFile C:\Users\santiago.marrone\Documents\academy-remote\template-deployment\parameters-development.json
+    -TemplateFile $path\template.json `
+    -TemplateParameterFile $path\parameters-development.json
     
     Remove-AzureRmResourceGroup -Name test-development
 }
