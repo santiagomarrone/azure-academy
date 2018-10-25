@@ -1,0 +1,26 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+
+        "DeploymentEnvironment":{
+            "value": "development"    
+        },
+  
+        "ResourceLocation": {
+            "value": "eastus"
+        },
+
+        "StorageAccountType": {
+            "value": "Standard_LRS"
+        },
+
+        "SQLDataBaseLevel": {
+            "value": "Basic"
+        },
+
+        "SQLDataBaseLimit": {
+            "value": 10000000
+        }
+    }
+}
